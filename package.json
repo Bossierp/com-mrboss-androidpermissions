@@ -1,0 +1,21 @@
+{
+  "name": "com-mrboss-androidpermissions",
+  "version": "1.0.0",
+  "description": "Cordova Android Permissions Plugin",
+  "cordova": {
+    "id": "com-mrboss-androidpermissions",
+    "platforms": [
+      "android"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bossierp/com-mrboss-androidpermissions.git"
+  },
+  "keywords": [
+    "cordova",
+    "Android Permissions"
+  ],
+  "author": "Mr.Boss",
+  "license": "Apache 2.0"
+}
