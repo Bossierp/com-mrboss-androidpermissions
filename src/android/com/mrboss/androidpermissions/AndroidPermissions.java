@@ -8,6 +8,10 @@ import org.json.JSONObject;
 
 import android.util.Log;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.lang.reflect.Field;
+
 import android.app.Activity;
 import runtimepermissions.PermissionsResultAction;
 import runtimepermissions.PermissionsManager;
@@ -17,7 +21,7 @@ public class AndroidPermissions extends CordovaPlugin {
 	@Override
 	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
 		final CallbackContext context = callbackContext;
-		
+
 		if(action.equals("androidPermissions")){
 			try {
 				/**
@@ -55,7 +59,30 @@ public class AndroidPermissions extends CordovaPlugin {
 				}
 			}
 		}
+
+		closeAndroidPDialog();
+
 		return true;
 	}
 	
+	private void closeAndroidPDialog(){
+        try {
+            Class aClass = Class.forName("android.content.pm.PackageParser$Package");
+            Constructor declaredConstructor = aClass.getDeclaredConstructor(String.class);
+            declaredConstructor.setAccessible(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            Class cls = Class.forName("android.app.ActivityThread");
+            Method declaredMethod = cls.getDeclaredMethod("currentActivityThread");
+            declaredMethod.setAccessible(true);
+            Object activityThread = declaredMethod.invoke(null);
+            Field mHiddenApiWarningShown = cls.getDeclaredField("mHiddenApiWarningShown");
+            mHiddenApiWarningShown.setAccessible(true);
+            mHiddenApiWarningShown.setBoolean(activityThread, true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
